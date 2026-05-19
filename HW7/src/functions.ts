@@ -1,5 +1,3 @@
-export function addElements(elements: string[]): string | undefined;
-export function addElements(elements: number[]): number | undefined;
 export function addElements(elements: string[] | number[]): string | number | undefined {
     if (elements.length === 0) return;
 
