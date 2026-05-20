@@ -1,11 +1,9 @@
 export function addElements(elements: string[] | number[]): string | number | undefined {
     if (elements.length === 0) return;
 
-    const initial = getInitialValueByType(typeof elements[0]);
+    if (typeof elements[0] === 'number') {
+        return (elements as number[]).reduce((sum, element) => sum + element, 0);
+    }
 
-    return (elements as number[]).reduce((sum, element) => sum + element, initial as number);
-}
-
-function getInitialValueByType(type: string): string | number {
-    return type === 'number' ? 0 : '';
+    return (elements as string[]).reduce((sum, element) => sum + element, '');
 }
