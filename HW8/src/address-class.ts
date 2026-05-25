@@ -4,6 +4,10 @@ class Address {
     private readonly _city: string;
     private readonly _zipcode: string;
 
+    public get addressInfo(): string {
+        return `${this._street}, ${this._suite}, ${this._city}, ${this._zipcode}`;
+    }
+
     public constructor(
         street: string,
         suite: string,
@@ -14,10 +18,6 @@ class Address {
         this._suite = suite;
         this._city = city;
         this._zipcode = zipcode;
-    }
-
-    public get addressInfo(): string {
-        return `${this._street}, ${this._suite}, ${this._city}, ${this._zipcode}`;
     }
 }
 

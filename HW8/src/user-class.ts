@@ -8,6 +8,16 @@ class User {
     private readonly _companyName: string;
     private readonly _address: Address;
 
+    public get userInfo(): string {
+        return [
+            `Name: ${this._name}`,
+            `Email: ${this._email}`,
+            `Phone: ${this._phone}`,
+            `Company: ${this._companyName}`,
+            `Address: ${this._address.addressInfo}`
+        ].join('\n');
+    }
+
     public constructor(
         name: string,
         email: string,
@@ -25,16 +35,6 @@ class User {
             address.city,
             address.zipcode
         );
-    }
-
-    public get userInfo(): string {
-        return [
-            `Name: ${this._name}`,
-            `Email: ${this._email}`,
-            `Phone: ${this._phone}`,
-            `Company: ${this._companyName}`,
-            `Address: ${this._address.addressInfo}`
-        ].join('\n');
     }
 }
 
