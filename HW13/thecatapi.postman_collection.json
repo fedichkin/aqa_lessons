@@ -29,7 +29,12 @@
               "});\r",
               "\r",
               "const breedId = pm.response.json()[0].id;\r",
-              "pm.collectionVariables.set(\"breed_id\", breedId);"
+              "const breedName = pm.response.json()[0].name;\r",
+              "const breedOrigin = pm.response.json()[0].origin;\r",
+              "\r",
+              "pm.collectionVariables.set(\"breed_id\", breedId);\r",
+              "pm.collectionVariables.set(\"breed_name\", breedName);\r",
+              "pm.collectionVariables.set(\"breed_origin\", breedOrigin);"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -71,21 +76,28 @@
               "pm.test(\"Image belongs to the requested breed\", () => {\r",
               "    const image = pm.response.json()[0];\r",
               "    const expectedBreedId = pm.collectionVariables.get(\"breed_id\");\r",
+              "    const expectedBreedName = pm.collectionVariables.get(\"breed_name\");\r",
+              "    const expectedBreedOrigin = pm.collectionVariables.get(\"breed_origin\");\r",
               "\r",
               "    pm.expect(image).to.have.property(\"breeds\");\r",
               "    pm.expect(image.breeds).to.be.an(\"array\").that.is.not.empty;\r",
               "    pm.expect(image.breeds[0].id).to.eql(expectedBreedId);\r",
+              "    pm.expect(image.breeds[0].name).to.eql(expectedBreedName);\r",
+              "    pm.expect(image.breeds[0].origin).to.eql(expectedBreedOrigin);\r",
               "});\r",
               "\r",
               "pm.test(\"Image has required fields\", () => {\r",
               "    const image = pm.response.json()[0];\r",
-              "    \r",
+              "\r",
               "    pm.expect(image).to.have.property(\"id\");\r",
               "    pm.expect(image).to.have.property(\"url\");\r",
               "});\r",
               "\r",
               "const imageId = pm.response.json()[0].id;\r",
-              "pm.collectionVariables.set(\"image_id\", imageId);"
+              "const imageUrl = pm.response.json()[0].url;\r",
+              "\r",
+              "pm.collectionVariables.set(\"image_id\", imageId);\r",
+              "pm.collectionVariables.set(\"image_url\", imageUrl);"
             ],
             "type": "text/javascript",
             "packages": {},
@@ -181,6 +193,49 @@
       "response": []
     },
     {
+      "name": "get votes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Vote belongs to the image\", () => {\r",
+              "    const vote = pm.response.json();\r",
+              "    const expectedImageId = pm.collectionVariables.get(\"image_id\");\r",
+              "    const expectedImageUrl = pm.collectionVariables.get(\"image_url\");\r",
+              "\r",
+              "    pm.expect(vote).to.have.property(\"image\");\r",
+              "    pm.expect(vote.image.id).to.eql(expectedImageId);\r",
+              "    pm.expect(vote.image.name).to.eql(expectedImageUrl);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/votes/{{vote_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "votes",
+            "{{vote_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "delete votes",
       "event": [
         {
@@ -197,7 +252,10 @@
               "  });\r",
               "\r",
               "  pm.collectionVariables.unset(\"breed_id\");\r",
+              "  pm.collectionVariables.unset(\"breed_name\");\r",
+              "  pm.collectionVariables.unset(\"breed_origin\");\r",
               "  pm.collectionVariables.unset(\"image_id\");\r",
+              "  pm.collectionVariables.unset(\"image_url\");\r",
               "  pm.collectionVariables.unset(\"vote_id\");"
             ],
             "type": "text/javascript",
