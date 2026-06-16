@@ -1,0 +1,333 @@
+{
+  "info": {
+    "_postman_id": "51d6cef1-96a6-4d91-9e9d-c02337cba3ba",
+    "name": "thecatapi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3626681"
+  },
+  "item": [
+    {
+      "name": "breed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is a non-empty array\", () => {\r",
+              "    const breeds = pm.response.json();\r",
+              "    pm.expect(breeds).to.be.an(\"array\").that.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"First breed has required fields\", () => {\r",
+              "    const breed = pm.response.json()[0];\r",
+              "    pm.expect(breed).to.have.property(\"id\");\r",
+              "    pm.expect(breed).to.have.property(\"name\");\r",
+              "});\r",
+              "\r",
+              "const breedId = pm.response.json()[0].id;\r",
+              "const breedName = pm.response.json()[0].name;\r",
+              "const breedOrigin = pm.response.json()[0].origin;\r",
+              "\r",
+              "pm.collectionVariables.set(\"breed_id\", breedId);\r",
+              "pm.collectionVariables.set(\"breed_name\", breedName);\r",
+              "pm.collectionVariables.set(\"breed_origin\", breedOrigin);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/breeds",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "breeds"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "images",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response is a non-empty array\", () => {\r",
+              "    const images = pm.response.json();\r",
+              "    pm.expect(images).to.be.an(\"array\").that.is.not.empty;\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Image belongs to the requested breed\", () => {\r",
+              "    const image = pm.response.json()[0];\r",
+              "    const expectedBreedId = pm.collectionVariables.get(\"breed_id\");\r",
+              "    const expectedBreedName = pm.collectionVariables.get(\"breed_name\");\r",
+              "    const expectedBreedOrigin = pm.collectionVariables.get(\"breed_origin\");\r",
+              "\r",
+              "    pm.expect(image).to.have.property(\"breeds\");\r",
+              "    pm.expect(image.breeds).to.be.an(\"array\").that.is.not.empty;\r",
+              "    pm.expect(image.breeds[0].id).to.eql(expectedBreedId);\r",
+              "    pm.expect(image.breeds[0].name).to.eql(expectedBreedName);\r",
+              "    pm.expect(image.breeds[0].origin).to.eql(expectedBreedOrigin);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Image has required fields\", () => {\r",
+              "    const image = pm.response.json()[0];\r",
+              "\r",
+              "    pm.expect(image).to.have.property(\"id\");\r",
+              "    pm.expect(image).to.have.property(\"url\");\r",
+              "});\r",
+              "\r",
+              "const imageId = pm.response.json()[0].id;\r",
+              "const imageUrl = pm.response.json()[0].url;\r",
+              "\r",
+              "pm.collectionVariables.set(\"image_id\", imageId);\r",
+              "pm.collectionVariables.set(\"image_url\", imageUrl);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/images/search?breed_ids={{breed_id}}&limit=1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "images",
+            "search"
+          ],
+          "query": [
+            {
+              "key": "breed_ids",
+              "value": "{{breed_id}}"
+            },
+            {
+              "key": "limit",
+              "value": "1"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "votes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200 or 201\", () => {\r",
+              "      pm.expect(pm.response.code).to.be.oneOf([200, 201]);\r",
+              "  });\r",
+              "\r",
+              "pm.test(\"Vote created successfully\", () => {\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body).to.have.property(\"message\", \"SUCCESS\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Response contains vote id\", () => {\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body).to.have.property(\"id\");\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Vote belongs to the image\", () => {\r",
+              "    const body = pm.response.json();\r",
+              "    const expectedImageId = pm.collectionVariables.get(\"image_id\");\r",
+              "\r",
+              "    pm.expect(body).to.have.property(\"image_id\").and.to.equal(expectedImageId);\r",
+              "});\r",
+              "\r",
+              "const voteId = pm.response.json().id;\r",
+              "pm.collectionVariables.set(\"vote_id\", voteId);"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"image_id\": \"{{image_id}}\",\r\n    \"value\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/votes",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "votes"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get votes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});\r",
+              "\r",
+              "pm.test(\"Vote belongs to the image\", () => {\r",
+              "    const vote = pm.response.json();\r",
+              "    const expectedImageId = pm.collectionVariables.get(\"image_id\");\r",
+              "    const expectedImageUrl = pm.collectionVariables.get(\"image_url\");\r",
+              "\r",
+              "    pm.expect(vote).to.have.property(\"image\");\r",
+              "    pm.expect(vote.image.id).to.eql(expectedImageId);\r",
+              "    pm.expect(vote.image.name).to.eql(expectedImageUrl);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/votes/{{vote_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "votes",
+            "{{vote_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete votes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status 200\", () => {\r",
+              "      pm.response.to.have.status(200);\r",
+              "  });\r",
+              "\r",
+              "  pm.test(\"Vote deleted successfully\", () => {\r",
+              "      const body = pm.response.json();\r",
+              "      pm.expect(body).to.have.property(\"message\", \"SUCCESS\");\r",
+              "  });\r",
+              "\r",
+              "  pm.collectionVariables.unset(\"breed_id\");\r",
+              "  pm.collectionVariables.unset(\"breed_name\");\r",
+              "  pm.collectionVariables.unset(\"breed_origin\");\r",
+              "  pm.collectionVariables.unset(\"image_id\");\r",
+              "  pm.collectionVariables.unset(\"image_url\");\r",
+              "  pm.collectionVariables.unset(\"vote_id\");"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"image_id\": \"{{image_id}}\",\r\n    \"value\": 1\r\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/votes/{{vote_id}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "votes",
+            "{{vote_id}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "live_ob28O37I19Pjcnazon1UDjdELiTr3kEAB00ENP2jE4qya7EQragAQJIts7UHt1nl",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}
