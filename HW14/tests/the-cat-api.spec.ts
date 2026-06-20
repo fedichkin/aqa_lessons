@@ -11,6 +11,7 @@ describe('The cat API tests', () => {
     const breedId = 'beng';
     let imageId: string;
     let voteId: number;
+    let voteCountryCode: string;
 
     it('should return the list of cat breeds', async () => {
         const response = await theCatApi.getBreedsAsync();
@@ -21,6 +22,7 @@ describe('The cat API tests', () => {
         const abyssinian = response.data.find((breed) => breed.id === 'abys');
 
         expect(abyssinian?.name).toBe('Abyssinian');
+        expect(abyssinian?.origin).toBe('Egypt');
     });
 
     it('should return a single image for the given breed by default', async () => {
@@ -52,8 +54,10 @@ describe('The cat API tests', () => {
         expect(response.data.message).toBe('SUCCESS');
         expect(response.data.image_id).toBe(imageId);
         expect(response.data.value).toBe(1);
+        expect(response.data.country_code).toHaveLength(2);
 
         voteId = response.data.id;
+        voteCountryCode = response.data.country_code;
     });
 
     it('should return the created vote by id', async () => {
@@ -63,6 +67,8 @@ describe('The cat API tests', () => {
         expect(response.data.id).toBe(voteId);
         expect(response.data.image_id).toBe(imageId);
         expect(response.data.value).toBe(1);
+        expect(response.data.country_code).toBe(voteCountryCode);
+        expect(response.data.created_at).toBeTypeOf('string');
     });
 
     it('should delete the created vote', async () => {
