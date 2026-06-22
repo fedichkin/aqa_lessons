@@ -43,7 +43,7 @@ describe('The cat API tests', () => {
         expect(response.data.length).toBeLessThanOrEqual(limit);
 
         for (const image of response.data) {
-            expect(image.breeds[0].id).toBe(breedId);
+            expect.soft(image.breeds[0].id).toBe(breedId);
         }
     });
 

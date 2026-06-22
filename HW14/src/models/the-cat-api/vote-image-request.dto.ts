@@ -1,4 +1,4 @@
 export interface VoteImageRequestDto {
     image_id: string,
-    value: 1,
+    value: number,
 }
