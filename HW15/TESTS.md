@@ -26,7 +26,7 @@ https://www.clicars.com/
 ### Test Case 3: Перевірка наявності пункту меню "Купить авто" і трьох підпунктів меню
 
  - Переходимо на сторінку https://www.clicars.com/
- - Очікуємо елемент з xpath `//div[@class="navigation-bar__menu"]//li[contains(@class,"collapsible")]/span[text()="Comprar coche"]` (кнопка "Купить авто")
+ - Очікуємо елемент з xpath `//div[@Class="container"]//span[text()="Comprar coche"]` (кнопка "Купить авто")
  - Клікаємо на кнопку "Купить авто"
  - Перевіряємо наявність трьох підпунктів меню (вони відображаються і клікабельні):
    - `//div[@class="navigation-bar__menu"]//a[text()="Coches segunda mano"]` (Б/у авто)
