@@ -17,13 +17,19 @@ export class BookPage {
     public constructor(private page: Page) {}
 
     public async getPrice(): Promise<string> {
-        return this.price.evaluate(el =>
-            Array.from(el.childNodes)
-                .filter(node => node.nodeType === Node.TEXT_NODE)
-                .map(node => node.textContent?.trim())
-                .filter(Boolean)
-                .join(' ')
-        );
+        const fullText = (await this.price.textContent()) ?? '';
+
+        const children = await this.price.locator('> *').all();
+        const childTexts = await Promise.all(children.map(child => child.textContent()));
+
+        let ownText = fullText;
+        for (const childText of childTexts) {
+            if (childText) {
+                ownText = ownText.replace(childText, '');
+            }
+        }
+
+        return ownText.trim().split(/\s+/).join(' ');
     }
 
     public async getPriceAsNumber(): Promise<number> {
