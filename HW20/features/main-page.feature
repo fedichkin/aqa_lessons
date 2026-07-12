@@ -1,9 +1,9 @@
-Feature: Головна сторінка Atena Books
+Feature: Atena Books home page
 
     Background:
-      Given користувач відкрив головну сторінку
+      Given the user opened the home page
 
-    Scenario: Ключові елементи головної сторінки видимі
-      Then логотип сайту видимий
-      And ліве меню містить пункти "Книги, Автори, Блог, Про нас"
-      And праве меню містить 5 елементів
+    Scenario: Key elements of the home page are visible
+      Then the site logo is visible
+      And the left menu contains items "Книги, Автори, Блог, Про нас"
+      And the right menu contains 5 items

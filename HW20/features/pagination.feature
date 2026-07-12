@@ -1,16 +1,16 @@
-Feature: Пагінація каталогу
+Feature: Catalog pagination
 
     Background:
-      Given користувач відкрив головну сторінку
-      And користувач відкрив каталог
+      Given the user opened the home page
+      And the user opened the catalog
 
-    Scenario: Навігація по сторінках каталогу
-      Then перша сторінка активна за замовчуванням
-      When користувач переходить на сторінку 3
-      Then активною є сторінка 3
-      And URL містить "page=3"
-      And перша книга на сторінці 3 відрізняється від першої книги на сторінці 1
-      When користувач переходить на наступну сторінку
-      Then активною є сторінка 4
-      When користувач переходить на попередню сторінку
-      Then активною є сторінка 3
+    Scenario: Navigation through catalog pages
+      Then the first page is active by default
+      When the user goes to page 3
+      Then page 3 is active
+      And the URL contains "page=3"
+      And the first book on page 3 differs from the first book on page 1
+      When the user goes to the next page
+      Then page 4 is active
+      When the user goes to the previous page
+      Then page 3 is active

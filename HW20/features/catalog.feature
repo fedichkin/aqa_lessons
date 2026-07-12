@@ -1,12 +1,11 @@
-Feature: Каталог книг
+Feature: Book catalog
 
     Background:
-      Given користувач відкрив головну сторінку
-      And користувач відкрив каталог
+      Given the user opened the home page
+      And the user opened the catalog
 
-    Scenario: Дані книги в каталозі співпадають з даними на сторінці книги
-      Then на сторінці каталогу відображається 9 книг
-      When користувач запам'ятовує дані першої книги
-      And користувач відкриває першу книгу
-      Then заголовок, автор і ціна на сторінці книги співпадають із запам'ятованими
-      
+    Scenario: Book data in the catalog matches the data on the book page
+      Then the catalog page displays 9 books
+      When the user remembers the data of the first book
+      And the user opens the first book
+      Then the title, author and price on the book page match the remembered data
