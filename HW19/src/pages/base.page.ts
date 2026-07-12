@@ -1,4 +1,4 @@
-import {Locator, Page} from '@playwright/test';
+import {expect, Locator, Page} from '@playwright/test';
 import { LeftMenuComponent, RightMenuComponent } from './components';
 
 export class BasePage {
@@ -19,4 +19,9 @@ export class BasePage {
     }
 
     public constructor(protected page: Page) {}
+
+    public async goTo(): Promise<void> {
+        await this.page.goto('https://atenabooks.com/', { waitUntil: 'domcontentloaded' });
+        await expect(this.logo).toBeVisible();
+    }
 }

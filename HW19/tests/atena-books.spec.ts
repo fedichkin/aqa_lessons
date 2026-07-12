@@ -10,11 +10,13 @@ test.describe('Atena books', () => {
     let bookPage: BookPage;
     let cartPage: CartPage;
 
-    test('should open main page and check key element are visible', async ({ mainPage }) => {
+    test.beforeEach(async ({ mainPage }) => {
         await test.step('Open main page', async () => {
             await mainPage.goTo();
         });
+    });
 
+    test('should open main page and check key element are visible', async ({ mainPage }) => {
         await test.step('Check logo of page is visible', async () => {
             await expect(mainPage.logo).toBeVisible();
         });
@@ -30,10 +32,6 @@ test.describe('Atena books', () => {
 
     test('should open catalog, select first book, remember data and check it on book page', async ({ page, mainPage }) => {
         let bookData: BookData;
-
-        await test.step('Open main page', async () => {
-            await mainPage.goTo();
-        });
 
         await test.step('Open catalog', async () => {
             await mainPage.leftMenu.openCatalog();
@@ -66,10 +64,6 @@ test.describe('Atena books', () => {
     });
 
     test('should check functional of pagination on catalog page', async ({ page, mainPage }) => {
-        await test.step('Open main page', async () => {
-            await mainPage.goTo();
-        });
-
         await test.step('Open catalog', async () => {
             await mainPage.leftMenu.openCatalog();
         });
@@ -108,10 +102,6 @@ test.describe('Atena books', () => {
 
     test('should add book to cart, check its count and remove it from cart', async ({ page, mainPage }) => {
         let bookData: BookData;
-
-        await test.step('Open main page', async () => {
-            await mainPage.goTo();
-        });
 
         await test.step('Open catalog', async () => {
             await mainPage.leftMenu.openCatalog();
