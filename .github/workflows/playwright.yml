@@ -121,7 +121,6 @@ jobs:
 
       # --- Notify ---
       - name: Comment PR with test results
-        if: github.event_name == 'pull_request'
         uses: daun/playwright-report-summary@v4
         with:
           report-file: ${{ env.BUILD_FOLDER }}/test-results.json
