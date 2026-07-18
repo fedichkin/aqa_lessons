@@ -1,0 +1,27 @@
+services:
+  webapp:
+    build:
+      context: ./docker/app
+    container_name: expense-tracker-app
+    ports:
+      - '3000:3000'
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: expense-tracker-tests
+    depends_on:
+      webapp:
+        condition: service_healthy
+    environment:
+      BASE_URL: http://webapp:3000
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results
